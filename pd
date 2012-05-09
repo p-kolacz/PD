@@ -1,0 +1,80 @@
+#!/usr/bin/ruby
+
+#require 'rainbow'
+
+Ver = 1.0
+Welcome = "** Personal Demon v#{Ver} **"
+
+class String
+	def to_class
+		Kernel.const_get(self)
+	rescue
+	   	nil
+	end
+end
+
+class PDModule
+	def self.list
+		puts self.methods(false).sort.join(' * ')
+	end
+
+	def self.edit(path)
+		exec "#{Editor} #{path}"
+	end
+
+	def self.cd(path)
+		puts "cd #{path}"
+	end
+	
+	def self.short_name
+		name.split('::').last.downcase
+	end
+end
+
+require File.dirname(__FILE__) + '/config'
+include Config
+
+def syntax_error(lvl=0)
+	puts "Syntax error on lvl #{lvl}"
+	exit 3 
+end
+
+def usage
+	puts Welcome
+	puts 'Usage: ' + 'pd module command [args]'
+	puts "Help: " + "pd module"
+	puts "Modules: " +  Config.constants.sort.join(' * ')
+	exit 1
+end
+
+def module_usage(mod)
+	puts Welcome
+	print "#{mod.short_name} methods: "
+	mod.list
+	exit 2
+end
+
+usage unless ARGV[0]
+
+case ARGV[0]
+	when 'code'
+		Meta.code
+	when 'conf'
+		Meta.conf
+end
+
+c = ARGV[0].capitalize.to_class
+syntax_error 1 unless c
+
+module_usage(c) unless ARGV[1]
+
+if c.respond_to? ARGV[1]
+	if ARGV[2]
+		c.method(ARGV[1]).call(ARGV[2])
+	else
+		c.method(ARGV[1]).call
+	end
+else
+	syntax_error 2
+end
+
