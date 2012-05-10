@@ -136,6 +136,9 @@ module Config
 		def self.confdir
 			cd(Path)
 		end
+		def self.keygen
+			exec "ssh-keygen -t rsa"
+		end
 	end
 
 	class Backup < PDModule
