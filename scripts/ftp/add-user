@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ $# -lt 1 ] ; then
+  echo "Usage: ftp-add-user username"
+else
+  uid=`id -u proftpd`
+  gid=`id -g proftpd`
+  ftpasswd --passwd --file /etc/proftpd/ftpd.passwd --name $1 --home /home/ftp/$1 --uid $uid --gid $gid --shell /bin/false
+  mkdir -p /home/ftp/$1
+  chown -R proftpd:nogroup /home/ftp/$1
+  chmod 700 /home/ftp/$1
+  /etc/init.d/proftpd restart
+fi
