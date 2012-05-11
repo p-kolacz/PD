@@ -90,7 +90,7 @@ module Config
 			exec "/etc/init.d/mysql restart"
 		end
 		def self.backup
-			exec "#{Editor} /usr/sbin/automysqlbackup"
+			exec "#{Editor} /etc/default/automysqlbackup"
 		end
 	end
 
@@ -120,10 +120,25 @@ module Config
 	end
 
 	class Ftp < PDModule
-		def self.confdir
-			exec "cd /etc/proftpd/"
+		Path = '/etc/proftpd/'
+
+		def self.conf(type=nil)
+			if type == 'tls'
+				edit "#{Path}tls.conf"
+			else
+				edit "#{Path}proftpd.conf"
+			end
 		end
-		def restart
+
+		def self.adduser(name)
+			exec "#{dir}scripts/ftp/add-user #{name}"
+		end
+
+		def self.cert
+			exec "#{dir}scripts/ftp/generate-cert"
+		end
+
+		def self.restart
 			exec "/etc/init.d/proftpd restart"
 		end
 	end
@@ -158,7 +173,7 @@ module Config
 	
 	class Meta < PDModule
 		def self.code
-			edit File.dirname(__FILE__) + '/pd'
+			edit "#{dir}pd"
 		end
 		def self.conf
 			edit __FILE__

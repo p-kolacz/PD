@@ -14,6 +14,9 @@ class String
 end
 
 class PDModule
+	def self.dir
+		File.dirname(__FILE__) + '/'
+	end
 	def self.list
 		puts self.methods(false).sort.join(' * ')
 	end
@@ -22,10 +25,6 @@ class PDModule
 		exec "#{Editor} #{path}"
 	end
 
-	def self.cd(path)
-		puts "cd #{path}"
-	end
-	
 	def self.short_name
 		name.split('::').last.downcase
 	end
