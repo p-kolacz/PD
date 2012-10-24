@@ -66,11 +66,11 @@ module Config
 		def self.logs(name)
 			p = Path + name + '/log/'
 			logs = Dir[p+'*']
-			puts logs
 			logs.sort! do |x,y|
 				test(?M,x) <=> test(?M,y)
 			end
-			puts logs
+			puts "Showing: #{logs.last}"
+			puts
 			exec "tail -f #{logs.last}"
 		end
 	end
