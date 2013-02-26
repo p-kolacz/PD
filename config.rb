@@ -13,6 +13,24 @@ module Config
 		end
 	end
 
+	class Dpkg < PDModule
+		def self.list(s)
+			exec "dpkg -l | grep #{s}"
+		end
+		def self.legend
+			puts
+			puts '[First letter - expected status]'
+			['i - install','r - remove','p - purge','h - hold','u - unkown'].each {|x| puts "\t" + x}
+
+			puts '[Second letter - current status]'
+			['n - not installed','i - installed','c - only config-files installed','u - unpacked','f - half-configured','h - half-installed','w - awaiting for other package triggers','t - triggers pending'].each {|x| puts "\t" + x}
+
+			puts '[Third letter - error state]'
+			puts "\tr - package broken, reinstallation required"
+			puts
+		end
+	end
+
 	class Nginx < PDModule
 		Path='/opt/nginx/'
 		def self.conf(vhost=nil)
@@ -91,6 +109,18 @@ module Config
 		end
 		def self.backup
 			exec "#{Editor} /etc/default/automysqlbackup"
+		end
+	end
+
+	class Mongo < PDModule
+		def self.start
+			exec "/etc/init.d/mongodb start"
+		end
+		def self.stop
+			exec "/etc/init.d/mongodb stop"
+		end
+		def self.restart
+			exec "/etc/init.d/mongodb restart"
 		end
 	end
 
