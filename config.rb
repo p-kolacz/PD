@@ -122,6 +122,9 @@ module Config
 		def self.restart
 			exec "/etc/init.d/mongodb restart"
 		end
+		def self.conf
+			edit " /etc/mongodb.conf"
+		end
 	end
 
 	class Apache < PDModule
