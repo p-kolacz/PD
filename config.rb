@@ -1,6 +1,6 @@
 Editor = 'vi'
 
-module Config
+module PDConfig
 
 	$dir = File.dirname(__FILE__)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/local/bin/ruby
 
 #require 'rainbow'
 
@@ -31,7 +31,7 @@ class PDModule
 end
 
 require File.dirname(__FILE__) + '/config'
-include Config
+include PDConfig
 
 def syntax_error(lvl=0)
 	puts "Syntax error on lvl #{lvl}"
@@ -42,7 +42,7 @@ def usage
 	puts Welcome
 	puts 'Usage: ' + 'pd module command [args]'
 	puts "Help: " + "pd module"
-	puts "Modules: " +  Config.constants.sort.join(' * ')
+	puts "Modules: " +  PDConfig.constants.sort.join(' * ')
 	exit 1
 end
 
